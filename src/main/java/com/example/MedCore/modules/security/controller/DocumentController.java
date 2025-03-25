@@ -19,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/v1/documents")
 public class DocumentController {
-
     private final DocumentService documentService;
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 

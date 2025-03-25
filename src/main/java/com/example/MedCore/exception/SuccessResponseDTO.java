@@ -1,5 +1,6 @@
 package com.example.MedCore.exception;
 
+import com.example.MedCore.modules.security.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
