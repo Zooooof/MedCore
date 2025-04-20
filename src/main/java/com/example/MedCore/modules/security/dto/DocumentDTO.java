@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 public class DocumentDTO {
-
+    //TODO использовать record
     private final Long documentId;
     private final String firstname;
     private final String lastname;

@@ -6,6 +6,7 @@ import com.example.MedCore.modules.security.dto.DocumentSOIRequestDTO;
 import com.example.MedCore.modules.security.entity.Document;
 import com.example.MedCore.modules.security.repository.DocumentRepository;
 import com.example.MedCore.modules.security.service.DocumentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class DocumentServiceImpl implements DocumentService {
-
-    @Autowired
-    private DocumentRepository documentRepository;
+    //TODO тут готово, нужно в других так сделать
+    private final DocumentRepository documentRepository;
 
     @Override
     public List<DocumentDTO> getAllDocuments() {

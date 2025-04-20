@@ -3,6 +3,9 @@ package com.example.MedCore.modules.security.controller;
 import com.example.MedCore.modules.security.dto.PermissionDTO;
 import com.example.MedCore.modules.security.entity.Permission;
 import com.example.MedCore.modules.security.service.PermissionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +17,14 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/permissions")
+@Tag(name = "Права доступа", description = "Методы управления правами доступа (permissions)")
 public class PermissionController {
 
     @Autowired
     private PermissionService permissionService;
 
+    @Operation(summary = "Получить все права", description = "Возвращает список всех прав. Требуются права VIEW_PERMISSIONS")
+    @ApiResponse(responseCode = "200", description = "Список прав успешно получен")
     @PreAuthorize("hasAuthority('VIEW_PERMISSIONS')")
     @GetMapping
     public ResponseEntity<List<Permission>> getAllPermissions() {
@@ -26,6 +32,8 @@ public class PermissionController {
         return ResponseEntity.ok(permissions);
     }
 
+    @Operation(summary = "Создать новое право", description = "Создаёт новое право. Требуются права ADD_PERMISSIONS")
+    @ApiResponse(responseCode = "200", description = "Право успешно создано")
     @PreAuthorize("hasAuthority('ADD_PERMISSIONS')")
     @PostMapping("/create")
     public ResponseEntity<Permission> addPermission(@RequestBody PermissionDTO permissionDTO) {
@@ -33,6 +41,8 @@ public class PermissionController {
         return ResponseEntity.ok(permission);
     }
 
+    @Operation(summary = "Получить право по ID", description = "Возвращает право по его идентификатору. Требуются права VIEW_PERMISSIONS")
+    @ApiResponse(responseCode = "200", description = "Право успешно найдено")
     @PreAuthorize("hasAuthority('VIEW_PERMISSIONS')")
     @GetMapping("/{permissionId}")
     public ResponseEntity<Permission> getPermissionById(@PathVariable Long permissionId) {
@@ -40,6 +50,8 @@ public class PermissionController {
         return ResponseEntity.ok(permission);
     }
 
+    @Operation(summary = "Получить право по названию", description = "Возвращает право по его названию. Требуются права VIEW_PERMISSIONS")
+    @ApiResponse(responseCode = "200", description = "Право успешно найдено")
     @PreAuthorize("hasAuthority('VIEW_PERMISSIONS')")
     @GetMapping("/name/{permissionName}")
     public ResponseEntity<Permission> getPermissionByName(@PathVariable String permissionName) {
@@ -47,4 +59,3 @@ public class PermissionController {
         return ResponseEntity.ok(permission);
     }
 }
-
