@@ -47,32 +47,36 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public DocumentDTO createDocument(DocumentRequestDTO requestDTO) {
-        if (documentRepository.existsBySerialAndNumber(requestDTO.getSerialAndNumber())) {
+        if (documentRepository.existsBySerialAndNumber(requestDTO.serialAndNumber())) {
             throw new RuntimeException("Document with this serial and number already exists");
         }
 
         Document document = new Document();
-        document.setFirstname(requestDTO.getFirstname());
-        document.setLastname(requestDTO.getLastname());
-        document.setSurname(requestDTO.getSurname());
-        document.setSerialAndNumber(requestDTO.getSerialAndNumber());
-        document.setDateOfBirth(requestDTO.getDateOfBirth());
-        document.setIssuedBy(requestDTO.getIssuedBy());
-        document.setDateIssued(requestDTO.getDateIssued());
-        document.setDepartmentCode(requestDTO.getDepartmentCode());
-        document.setGender(Document.Gender.valueOf(requestDTO.getGender().toUpperCase()));
-        document.setAddress(requestDTO.getAddress());
+        document.setFirstname(requestDTO.firstname());
+        document.setLastname(requestDTO.lastname());
+        document.setSurname(requestDTO.surname());
+        document.setSerialAndNumber(requestDTO.serialAndNumber());
+        document.setDateOfBirth(requestDTO.dateOfBirth());
+        document.setIssuedBy(requestDTO.issuedBy());
+        document.setDateIssued(requestDTO.dateIssued());
+        document.setDepartmentCode(requestDTO.departmentCode());
+        document.setGender(Document.Gender.valueOf(requestDTO.gender().toUpperCase()));
+        document.setAddress(requestDTO.address());
         document.setCreatedAt(LocalDateTime.now());
         document.setUpdatedAt(LocalDateTime.now());
-        Document savedDocument = documentRepository.save(document);
 
-        return new DocumentDTO(
-                savedDocument.getDocumentId(),
-                savedDocument.getFirstname(),
-                savedDocument.getLastname(),
-                savedDocument.getGender().name(),
-                savedDocument.getDateOfBirth()
-        );
+        try {
+            Document savedDocument = documentRepository.save(document);
+            return new DocumentDTO(
+                    savedDocument.getDocumentId(),
+                    savedDocument.getFirstname(),
+                    savedDocument.getLastname(),
+                    savedDocument.getGender().name(),
+                    savedDocument.getDateOfBirth()
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("Error while saving the document: " + e.getMessage(), e);
+        }
     }
 
     @Override
@@ -80,16 +84,16 @@ public class DocumentServiceImpl implements DocumentService {
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Document not found"));
 
-        document.setFirstname(requestDTO.getFirstname());
-        document.setLastname(requestDTO.getLastname());
-        document.setSurname(requestDTO.getSurname());
-        document.setSerialAndNumber(requestDTO.getSerialAndNumber());
-        document.setDateOfBirth(requestDTO.getDateOfBirth());
-        document.setIssuedBy(requestDTO.getIssuedBy());
-        document.setDateIssued(requestDTO.getDateIssued());
-        document.setDepartmentCode(requestDTO.getDepartmentCode());
-        document.setGender(Document.Gender.valueOf(requestDTO.getGender().toUpperCase()));
-        document.setAddress(requestDTO.getAddress());
+        document.setFirstname(requestDTO.firstname());
+        document.setLastname(requestDTO.lastname());
+        document.setSurname(requestDTO.surname());
+        document.setSerialAndNumber(requestDTO.serialAndNumber());
+        document.setDateOfBirth(requestDTO.dateOfBirth());
+        document.setIssuedBy(requestDTO.issuedBy());
+        document.setDateIssued(requestDTO.dateIssued());
+        document.setDepartmentCode(requestDTO.departmentCode());
+        document.setGender(Document.Gender.valueOf(requestDTO.gender().toUpperCase()));
+        document.setAddress(requestDTO.address());
         document.setUpdatedAt(LocalDateTime.now());
         Document updatedDocument = documentRepository.save(document);
 
@@ -107,20 +111,19 @@ public class DocumentServiceImpl implements DocumentService {
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Document not found"));
 
-        if (documentRepository.existsByPolicy(requestDTO.getPolicy())) {
+        if (documentRepository.existsByPolicy(requestDTO.policy())) {
             throw new RuntimeException("Policy already exists");
         }
 
-        if (documentRepository.existsByInn(requestDTO.getInn())) {
+        if (documentRepository.existsByInn(requestDTO.inn())) {
             throw new RuntimeException("Inn already exists");
         }
 
-        document.setSnils(requestDTO.getSnils());
-        document.setPolicy(requestDTO.getPolicy());
-        document.setInn(requestDTO.getInn());
+        document.setSnils(requestDTO.snils());
+        document.setPolicy(requestDTO.policy());
+        document.setInn(requestDTO.inn());
         documentRepository.save(document);
 
         return "the data has been updated";
     }
-
 }

@@ -56,4 +56,15 @@ public class RoleDB {
     public void preUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    public RoleDB(String roleName, String description) {
+        this.roleName = roleName;
+        this.description = description;
+    }
+
+    public RoleDB(String roleName, String description, RoleDB parentRole) {
+        this.roleName = roleName;
+        this.description = description;
+        this.parentRole = parentRole;
+    }
 }

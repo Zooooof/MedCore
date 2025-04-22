@@ -1,15 +1,31 @@
 package com.example.MedCore.modules.clinic.dto;
 
-import lombok.Getter;
 
-import java.util.Date;
+import jakarta.persistence.ColumnResult;
+import jakarta.persistence.ConstructorResult;
+import jakarta.persistence.SqlResultSetMapping;
 
-@Getter
-public class DoctorDTO {
-    private final Long doctorId;
-    private final String firstName;
-    private final String surname;
-    private final String lastName;
-    private final Date dateOfBirth;
-    //TODO доделать
-}
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+public record DoctorDTO (
+        Long doctorId,
+        String firstname,
+        String surname,
+        String lastname,
+        LocalDate dateOfBirth,
+        Long serialAndNumber,
+        LocalDate dateIssued,
+        String departmentCode,
+        String snils,
+        String inn,
+        String policy,
+        String login,
+        String email,
+        String phone,
+        LocalDateTime startedWorking,
+        String licenceNumber,
+        String clinicName,
+        String clinicAddress,
+        String specialization
+) {}

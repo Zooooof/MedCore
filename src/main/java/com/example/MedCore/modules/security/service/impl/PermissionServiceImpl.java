@@ -5,7 +5,6 @@ import com.example.MedCore.modules.security.entity.Permission;
 import com.example.MedCore.modules.security.repository.PermissionRepository;
 import com.example.MedCore.modules.security.service.PermissionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,9 +31,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Permission addPermission(PermissionDTO permissionDTO) {
-        Permission permission = new Permission();
-        permission.setPermissionName(permissionDTO.getPermissionName());
-        permission.setDescription(permissionDTO.getDescription());
+        Permission permission = new Permission(permissionDTO.permissionName(), permissionDTO.description());
         return permissionRepository.save(permission);
     }
 }

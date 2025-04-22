@@ -2,8 +2,5 @@ package com.example.MedCore.modules.security.dto;
 
 import lombok.Getter;
 
-@Getter
-public class PermissionDTO {
-    private String permissionName;
-    private String description;
-}
+
+public record PermissionDTO(String permissionName, String description) {}

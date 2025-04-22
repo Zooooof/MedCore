@@ -48,4 +48,9 @@ public class Permission {
     public void preUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    public Permission(String permissionName, String description) {
+        this.permissionName = permissionName;
+        this.description = description;
+    }
 }

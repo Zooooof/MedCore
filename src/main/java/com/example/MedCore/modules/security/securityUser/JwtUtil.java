@@ -72,7 +72,7 @@ public class JwtUtil {
 
         // Преобразование в GrantedAuthority, добавляем только права (permissions)
         List<GrantedAuthority> authorities = rolesAndPermissions.stream()
-                .map(rp -> new SimpleGrantedAuthority(rp.getPermissionName()))
+                .map(rp -> new SimpleGrantedAuthority(rp.permissionName()))
                 .collect(Collectors.toList());
         log.info("Предоставленные полномочия: {}", authorities);
 
