@@ -4,15 +4,16 @@ import com.example.MedCore.modules.security.dto.PermissionDTO;
 import com.example.MedCore.modules.security.entity.Permission;
 import com.example.MedCore.modules.security.repository.PermissionRepository;
 import com.example.MedCore.modules.security.service.PermissionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PermissionServiceImpl implements PermissionService {
-    @Autowired
-    private PermissionRepository permissionRepository;
+    private final PermissionRepository permissionRepository;
 
     @Override
     public List<Permission> getAllPermissions() {

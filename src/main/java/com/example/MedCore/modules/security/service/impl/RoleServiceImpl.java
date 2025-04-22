@@ -11,6 +11,7 @@ import com.example.MedCore.modules.security.repository.PermissionRepository;
 import com.example.MedCore.modules.security.repository.RolePermissionRepository;
 import com.example.MedCore.modules.security.repository.RoleRepository;
 import com.example.MedCore.modules.security.service.RoleService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
-    @Autowired
     private RoleRepository roleRepository;
-    @Autowired
     private PermissionRepository permissionRepository;
-    @Autowired
     private RolePermissionRepository rolePermissionRepository;
+
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Override

@@ -11,6 +11,7 @@ import com.example.MedCore.modules.security.securityUser.JwtUtil;
 import com.example.MedCore.modules.security.securityUser.Validators.ValidatorUser;
 import com.example.MedCore.modules.security.service.UserService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,21 +23,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private DocumentRepository documentRepository;
-    @Autowired
     private RoleRepository roleRepository;
-    @Autowired
     private UserRoleRepository userRoleRepository;
-    @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
     private JwtUtil jwtUtil;
-    @Autowired
     private ValidatorUser validatorUser;
 
 

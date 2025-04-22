@@ -35,7 +35,7 @@ public class UserController {
         UserDTO registeredUser = userService.registerUser(requestDTO);
         SuccessResponseDTO response = new SuccessResponseDTO(
                 HttpStatus.CREATED.value(),
-                "User registered successfully",
+                "Пользователь успешно зарегистрировался",
                 registeredUser
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -48,7 +48,7 @@ public class UserController {
         String token = userService.authenticate(requestDTO);
         SuccessResponseDTO response = new SuccessResponseDTO(
                 HttpStatus.ACCEPTED.value(),
-                "User authenticated successfully",
+                "Пользователь успешно авторизовался",
                 token
         );
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);

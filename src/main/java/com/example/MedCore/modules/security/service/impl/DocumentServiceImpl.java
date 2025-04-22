@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class DocumentServiceImpl implements DocumentService {
-    //TODO тут готово, нужно в других так сделать
     private final DocumentRepository documentRepository;
 
     @Override
