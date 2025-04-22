@@ -10,5 +10,4 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     boolean existsBySerialAndNumber(@Param("serialAndNumber") Long serialAndNumber);
     boolean existsByPolicy(String policy);
     boolean existsByInn(String inn);
-
 }
