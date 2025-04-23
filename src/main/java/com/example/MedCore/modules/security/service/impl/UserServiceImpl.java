@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -96,7 +97,12 @@ public class UserServiceImpl implements UserService {
             throw new CommonException("Invalid password");
         }
 
-        String token = jwtUtil.generateToken(user.getLogin());
+        // Извлекаем роли пользователя
+        List<String> roles = user.getUserRoles().stream()
+                .map(userRole -> userRole.getRole().getRoleName()) // Извлекаем роли из сущности UserRole
+                .collect(Collectors.toList());
+
+        String token = jwtUtil.generateToken(user.getLogin(), roles);
         logger.info("Generated JWT token for user: {}", user.getLogin());
         return token;
     }
@@ -106,7 +112,6 @@ public class UserServiceImpl implements UserService {
         try {
             List<RoleDB> roles = userRoleRepository.findRolesByUserId(userId);
 
-            // Convert to DTO
             return roles.stream()
                     .map(role -> new RoleResponseDTO(role.getRoleId(), role.getRoleName()))
                     .collect(Collectors.toList());

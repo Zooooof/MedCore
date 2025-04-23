@@ -1,8 +1,6 @@
 package com.example.MedCore.modules.security.securityUser;
 
 import com.example.MedCore.modules.security.dto.RolePermissionDTO;
-import com.example.MedCore.modules.security.repository.RoleRepository;
-import com.example.MedCore.modules.security.service.RoleService;
 import com.example.MedCore.modules.security.service.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -25,16 +23,12 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {
+
     private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    @Autowired
-    private RoleService roleService;
-
-    public String generateToken(String login) {
-        String role = roleService.getRoleByLogin(login);
-
+    public String generateToken(String login, List<String> roles) {
         return Jwts.builder()
                 .setSubject(login)
-                .claim("role", role)
+                .claim("roles", roles)  // Добавление ролей в токен
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 часов
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
@@ -65,13 +59,6 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    public String extractRole(String token) {
-        return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("role", String.class);
-    }
-
     private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
 
     @Autowired
@@ -81,16 +68,17 @@ public class JwtUtil {
     public Authentication getAuthentication(String token) {
         String login = extractLogin(token);
 
-        // Получение ролей и прав пользователя
+        // Получаем список прав для пользователя
         List<RolePermissionDTO> rolesAndPermissions = userService.getRolesAndPermissionsByLogin(login);
 
-        // Преобразование в GrantedAuthority, добавляем только права (permissions)
+        // Преобразуем права в GrantedAuthority
         List<GrantedAuthority> authorities = rolesAndPermissions.stream()
-                .map(rp -> new SimpleGrantedAuthority(rp.permissionName()))
+                .map(rp -> new SimpleGrantedAuthority(rp.permissionName()))  // Используем permissionName, а не роль
                 .collect(Collectors.toList());
+
         log.info("Предоставленные полномочия: {}", authorities);
 
-        // Возврат объекта Authentication
+        // Возвращаем объект Authentication
         return new UsernamePasswordAuthenticationToken(login, null, authorities);
     }
 }

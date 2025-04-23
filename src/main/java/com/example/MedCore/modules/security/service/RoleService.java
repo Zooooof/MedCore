@@ -13,5 +13,4 @@ public interface RoleService {
     List<RoleDB> getSubordinateRoles(RoleDB parentRole);
     RoleDB addRole(RoleDTO roleDTO);
     void assignPermissionToRole(RolePermissionAssignmentDTO assignmentDTO);
-    String getRoleByLogin(String login);
 }
