@@ -1,6 +1,8 @@
 package com.example.MedCore.modules.security.securityUser;
 
 import com.example.MedCore.modules.security.dto.RolePermissionDTO;
+import com.example.MedCore.modules.security.repository.RoleRepository;
+import com.example.MedCore.modules.security.service.RoleService;
 import com.example.MedCore.modules.security.service.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,11 +25,16 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {
-
     private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    @Autowired
+    private RoleService roleService;
+
     public String generateToken(String login) {
+        String role = roleService.getRoleByLogin(login);
+
         return Jwts.builder()
                 .setSubject(login)
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 часов
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
@@ -56,6 +63,13 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public String extractRole(String token) {
+        return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role", String.class);
     }
 
     private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);

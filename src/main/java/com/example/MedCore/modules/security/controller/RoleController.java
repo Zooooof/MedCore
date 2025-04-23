@@ -3,10 +3,12 @@ package com.example.MedCore.modules.security.controller;
 import com.example.MedCore.modules.security.dto.RoleDTO;
 import com.example.MedCore.modules.security.dto.RolePermissionAssignmentDTO;
 import com.example.MedCore.modules.security.entity.RoleDB;
+import com.example.MedCore.modules.security.securityUser.JwtUtil;
 import com.example.MedCore.modules.security.service.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +26,7 @@ import java.util.List;
 public class RoleController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
-    @Autowired
+    private JwtUtil jwtUtil;
     private RoleService roleService;
 
     @Operation(summary = "Получить все роли", description = "Требуются права CRUD_ROLES")
@@ -83,5 +84,19 @@ public class RoleController {
     public ResponseEntity<Void> assignPermissionToRole(@RequestBody RolePermissionAssignmentDTO assignmentDTO) {
         roleService.assignPermissionToRole(assignmentDTO);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Получить роль текущего пользователя", description = "Возвращает роль по JWT-токену пользователя")
+    @ApiResponse(responseCode = "200", description = "Роль успешно получена")
+    @GetMapping("/my")
+    public ResponseEntity<String> getMyRole(HttpServletRequest request) {
+        String token = jwtUtil.getTokenFromRequest(request);
+        if (token == null) {
+            return ResponseEntity.status(401).body("Токен отсутствует");
+        }
+
+        String login = jwtUtil.extractLogin(token);
+        String role = roleService.getRoleByLogin(login);
+        return ResponseEntity.ok(role);
     }
 }

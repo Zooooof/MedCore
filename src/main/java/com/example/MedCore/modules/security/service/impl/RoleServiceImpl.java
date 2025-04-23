@@ -7,9 +7,11 @@ import com.example.MedCore.exception.CommonException;
 import com.example.MedCore.modules.security.entity.Permission;
 import com.example.MedCore.modules.security.entity.RoleDB;
 import com.example.MedCore.modules.security.entity.RolePermission;
+import com.example.MedCore.modules.security.entity.User;
 import com.example.MedCore.modules.security.repository.PermissionRepository;
 import com.example.MedCore.modules.security.repository.RolePermissionRepository;
 import com.example.MedCore.modules.security.repository.RoleRepository;
+import com.example.MedCore.modules.security.repository.UserRepository;
 import com.example.MedCore.modules.security.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -23,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
     private final PermissionRepository permissionRepository;
     private final RolePermissionRepository rolePermissionRepository;
 
@@ -78,6 +81,17 @@ public class RoleServiceImpl implements RoleService {
 
         RolePermission rolePermission = new RolePermission(role, permission);
         rolePermissionRepository.save(rolePermission);
+    }
+
+    @Override
+    public String getRoleByLogin(String login) {
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new CommonException("User not found"));
+
+        return user.getUserRoles().stream()
+                .findFirst()
+                .map(userRole -> userRole.getRole().getRoleName())
+                .orElseThrow(() -> new CommonException("User has no role"));
     }
 }
 

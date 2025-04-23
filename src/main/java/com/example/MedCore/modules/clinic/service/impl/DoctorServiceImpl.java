@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,5 +52,11 @@ public class DoctorServiceImpl implements DoctorService {
                 doctor.getClinic().getAddress(),
                 doctor.getSpecialization().getName()
         );
+    }
+
+    @Override
+    public Optional<DoctorDTO> getDoctorById(Long doctorId) {
+        return doctorRepository.findById(doctorId)
+                .map(this::mapToDTO);
     }
 }
