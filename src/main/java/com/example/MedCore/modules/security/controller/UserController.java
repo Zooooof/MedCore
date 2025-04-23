@@ -27,8 +27,6 @@ public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
-    private final RoleService roleService;
-    private final PermissionService permissionService;
 
     @Operation(summary = "Регистрация пользователя", description = "Создаёт нового пользователя и возвращает данные зарегистрированного пользователя")
     @ApiResponse(responseCode = "201", description = "Пользователь успешно зарегистрирован")
@@ -37,7 +35,7 @@ public class UserController {
         UserDTO registeredUser = userService.registerUser(requestDTO);
         SuccessResponseDTO response = new SuccessResponseDTO(
                 HttpStatus.CREATED.value(),
-                "User registered successfully",
+                "Пользователь успешно зарегистрировался",
                 registeredUser
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -50,7 +48,7 @@ public class UserController {
         String token = userService.authenticate(requestDTO);
         SuccessResponseDTO response = new SuccessResponseDTO(
                 HttpStatus.ACCEPTED.value(),
-                "User authenticated successfully",
+                "Пользователь успешно авторизовался",
                 token
         );
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);

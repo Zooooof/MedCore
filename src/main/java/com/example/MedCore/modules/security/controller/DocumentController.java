@@ -31,13 +31,13 @@ public class DocumentController {
     @PreAuthorize("hasAuthority('VIEW_DOCUMENTS')")
     @GetMapping
     public ResponseEntity<List<DocumentDTO>> getAllDocuments() {
-        logger.info("Received request to fetch all documents");
+        logger.info("Получен запрос на получение всех документов");
         try {
             List<DocumentDTO> documents = documentService.getAllDocuments();
-            logger.info("Documents fetched successfully: {}", documents.size());
+            logger.info("Документы получены успешно: {}", documents.size());
             return ResponseEntity.ok(documents);
         } catch (Exception e) {
-            logger.error("Error while fetching documents", e);
+            logger.error("Ошибка при извлечении документов", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

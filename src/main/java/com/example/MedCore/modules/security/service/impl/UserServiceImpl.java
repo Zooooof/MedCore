@@ -11,6 +11,7 @@ import com.example.MedCore.modules.security.securityUser.JwtUtil;
 import com.example.MedCore.modules.security.securityUser.Validators.ValidatorUser;
 import com.example.MedCore.modules.security.service.UserService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,41 +23,34 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private DocumentRepository documentRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private UserRoleRepository userRoleRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private ValidatorUser validatorUser;
-
+    private final UserRepository userRepository;
+    private final DocumentRepository documentRepository;
+    private final RoleRepository roleRepository;
+    private final UserRoleRepository userRoleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+    private final ValidatorUser validatorUser;
 
     @Override
     public UserDTO registerUser(UserRequestDTO requestDTO) {
         validatorUser.validateRegisterRequest(requestDTO);
 
-        if (userRepository.existsByLogin(requestDTO.getLogin())) {
+        if (userRepository.existsByLogin(requestDTO.login())) {
             throw new CommonException("Login already exists");
         }
 
-        Document document = documentRepository.findById(requestDTO.getDocument_id())
+        Document document = documentRepository.findById(requestDTO.document_id())
                 .orElseThrow(() -> new CommonException("There is no document with such an id"));
 
         User user = new User();
-        user.setLogin(requestDTO.getLogin());
-        user.setPassword_hash(passwordEncoder.encode(requestDTO.getPassword()));
-        user.setEmail(requestDTO.getEmail());
-        user.setPhone(requestDTO.getPhone());
-        user.setStatus(User.Status.valueOf(requestDTO.getStatus().toUpperCase()));
+        user.setLogin(requestDTO.login());
+        user.setPassword_hash(passwordEncoder.encode(requestDTO.password()));
+        user.setEmail(requestDTO.email());
+        user.setPhone(requestDTO.phone());
+        user.setStatus(User.Status.valueOf(requestDTO.status().toUpperCase()));
         user.setDocument(document);
 
         User savedUser = userRepository.save(user);
@@ -70,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
         logger.info("User registered successfully with patient role: {}", savedUser.getLogin());
 
-        // Возврат DTO пользователя
+        // Return DTO user record
         return new UserDTO(
                 savedUser.getLogin(),
                 savedUser.getPassword_hash(),
@@ -83,11 +77,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public String authenticate(UserLoginRequestDTO requestDTO) {
-        logger.info("Получен запрос на аутентификацию для: {}", requestDTO.getLoginOrEmail());
+        logger.info("Received authentication request for: {}", requestDTO.loginOrEmail());
         validatorUser.validateLoginRequest(requestDTO);
 
-        String loginOrEmail = requestDTO.getLoginOrEmail();
-        String password = requestDTO.getPassword();
+        String loginOrEmail = requestDTO.loginOrEmail();
+        String password = requestDTO.password();
 
         User user;
         if (loginOrEmail.contains("@")) {
@@ -99,28 +93,30 @@ public class UserServiceImpl implements UserService {
         }
 
         if (!passwordEncoder.matches(password, user.getPassword_hash())) {
-            logger.error("Неверный пароль для пользователя: {}", loginOrEmail);
+            logger.error("Invalid password for user: {}", loginOrEmail);
             throw new CommonException("Invalid password");
         }
 
+        // Извлекаем роли пользователя
+        List<String> roles = user.getUserRoles().stream()
+                .map(userRole -> userRole.getRole().getRoleName()) // Извлекаем роли из сущности UserRole
+                .collect(Collectors.toList());
 
-        String token = jwtUtil.generateToken(user.getLogin());
-        logger.info("Сгенерирован JWT токен для пользователя: {}", user.getLogin());
+        String token = jwtUtil.generateToken(user.getLogin(), roles);
+        logger.info("Generated JWT token for user: {}", user.getLogin());
         return token;
     }
-
 
     @Override
     public List<RoleResponseDTO> getUserRoles(Long userId) {
         try {
             List<RoleDB> roles = userRoleRepository.findRolesByUserId(userId);
 
-            // Преобразование в DTO
             return roles.stream()
                     .map(role -> new RoleResponseDTO(role.getRoleId(), role.getRoleName()))
                     .collect(Collectors.toList());
         } catch (Exception e) {
-            logger.error("Ошибка при поиске ролей для пользователя с ID: {}", userId, e);
+            logger.error("Error while fetching roles for user with ID: {}", userId, e);
             throw e;
         }
     }
@@ -128,10 +124,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<PermissionResponseDTO> getUserPermissions(Long userId) {
         try {
-            // Прямой доступ через репозиторий
+            // Direct access through repository
             List<Permission> permissions = userRoleRepository.findPermissionsByUserId(userId);
 
-            // Преобразование сущностей Permission в DTO
+            // Convert entities to PermissionDTOs
             List<PermissionResponseDTO> permissionDTOs = permissions.stream()
                     .map(permission -> new PermissionResponseDTO(
                             permission.getPermissionsId(),
@@ -142,16 +138,16 @@ public class UserServiceImpl implements UserService {
 
             return permissionDTOs;
         } catch (Exception e) {
-            logger.error("Ошибка при поиске прав для пользователя с ID: {}", userId, e);
+            logger.error("Error while fetching permissions for user with ID: {}", userId, e);
             throw e;
         }
     }
 
     @Override
     public void assignRoleToUser(UserRoleAssignmentDTO assignmentDTO) {
-        User user = userRepository.findById(assignmentDTO.getUserId())
+        User user = userRepository.findById(assignmentDTO.userId())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        RoleDB role = roleRepository.findById(assignmentDTO.getRoleId())
+        RoleDB role = roleRepository.findById(assignmentDTO.roleId())
                 .orElseThrow(() -> new CommonException("Role not found"));
 
         UserRole userRole = new UserRole();
@@ -166,8 +162,8 @@ public class UserServiceImpl implements UserService {
         try {
             return userRepository.findRolesAndPermissionsByLogin(login);
         } catch (Exception e) {
-            logger.error("Ошибка при выборе ролей и разрешений для входа в систему: {}", login, e);
-            throw new CommonException("Не удалось получить роли и разрешения");
+            logger.error("Error while fetching roles and permissions for login: {}", login, e);
+            throw new CommonException("Failed to fetch roles and permissions");
         }
     }
 }

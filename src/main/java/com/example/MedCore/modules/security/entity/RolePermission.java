@@ -43,4 +43,9 @@ public class RolePermission {
     public void preUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    public RolePermission(RoleDB role, Permission permission) {
+        this.role = role;
+        this.permission = permission;
+    }
 }

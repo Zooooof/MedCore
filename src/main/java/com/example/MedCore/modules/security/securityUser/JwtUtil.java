@@ -25,9 +25,10 @@ import java.util.stream.Collectors;
 public class JwtUtil {
 
     private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    public String generateToken(String login) {
+    public String generateToken(String login, List<String> roles) {
         return Jwts.builder()
                 .setSubject(login)
+                .claim("roles", roles)  // Добавление ролей в токен
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 часов
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
@@ -67,16 +68,17 @@ public class JwtUtil {
     public Authentication getAuthentication(String token) {
         String login = extractLogin(token);
 
-        // Получение ролей и прав пользователя
+        // Получаем список прав для пользователя
         List<RolePermissionDTO> rolesAndPermissions = userService.getRolesAndPermissionsByLogin(login);
 
-        // Преобразование в GrantedAuthority, добавляем только права (permissions)
+        // Преобразуем права в GrantedAuthority
         List<GrantedAuthority> authorities = rolesAndPermissions.stream()
-                .map(rp -> new SimpleGrantedAuthority(rp.getPermissionName()))
+                .map(rp -> new SimpleGrantedAuthority(rp.permissionName()))  // Используем permissionName, а не роль
                 .collect(Collectors.toList());
+
         log.info("Предоставленные полномочия: {}", authorities);
 
-        // Возврат объекта Authentication
+        // Возвращаем объект Authentication
         return new UsernamePasswordAuthenticationToken(login, null, authorities);
     }
 }

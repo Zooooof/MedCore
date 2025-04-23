@@ -4,16 +4,15 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 
-@Getter
-public class DocumentRequestDTO {
-    private String firstname;
-    private String lastname;
-    private String surname;
-    private Long serialAndNumber;
-    private LocalDate dateOfBirth;
-    private String issuedBy;
-    private LocalDate dateIssued;
-    private String departmentCode;
-    private String gender;
-    private String address;
-}
+public record DocumentRequestDTO(
+        String firstname,
+        String lastname,
+        String surname,
+        Long serialAndNumber,
+        LocalDate dateOfBirth,
+        String issuedBy,
+        LocalDate dateIssued,
+        String departmentCode,
+        String gender,
+        String address
+) {}
