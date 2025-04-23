@@ -2,6 +2,7 @@ package com.example.MedCore.modules.security.repository;
 
 import com.example.MedCore.modules.security.entity.Permission;
 import com.example.MedCore.modules.security.entity.RoleDB;
+import com.example.MedCore.modules.security.entity.User;
 import com.example.MedCore.modules.security.entity.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,8 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
             "JOIN UserRole ur ON r.roleId = ur.role.roleId " +
             "WHERE ur.user.userId = :userId")
     List<Permission> findPermissionsByUserId(@Param("userId") Long userId);
+
+    @Query("SELECT ur FROM UserRole ur JOIN FETCH ur.role WHERE ur.user = :user")
+    List<UserRole> findWithRolesByUser(@Param("user") User user);
+    List<UserRole> findByUser(User user);
 }

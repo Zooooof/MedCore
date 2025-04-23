@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public String authenticate(UserLoginRequestDTO requestDTO) {
-        logger.info("Received authentication request for: {}", requestDTO.loginOrEmail());
+        logger.info("Получен запрос на аутентификацию для: {}", requestDTO.loginOrEmail());
         validatorUser.validateLoginRequest(requestDTO);
 
         String loginOrEmail = requestDTO.loginOrEmail();
@@ -91,19 +91,21 @@ public class UserServiceImpl implements UserService {
             user = userRepository.findByLogin(loginOrEmail)
                     .orElseThrow(() -> new CommonException("User not found"));
         }
+        logger.info(user.getUserRoles().toString());
 
         if (!passwordEncoder.matches(password, user.getPassword_hash())) {
-            logger.error("Invalid password for user: {}", loginOrEmail);
-            throw new CommonException("Invalid password");
+            logger.error("Неверный пароль для пользователя: {}", loginOrEmail);
+            throw new CommonException("Неверный пароль");
         }
 
-        // Извлекаем роли пользователя
-        List<String> roles = user.getUserRoles().stream()
-                .map(userRole -> userRole.getRole().getRoleName()) // Извлекаем роли из сущности UserRole
+        List<UserRole> userRoles = userRoleRepository.findWithRolesByUser(user);
+
+        List<String> roles = userRoles.stream()
+                .map(ur -> ur.getRole().getRoleName())
                 .collect(Collectors.toList());
 
         String token = jwtUtil.generateToken(user.getLogin(), roles);
-        logger.info("Generated JWT token for user: {}", user.getLogin());
+        logger.info("Сгенерирован JWT-токен для пользователя: {}", user.getLogin());
         return token;
     }
 
@@ -124,10 +126,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<PermissionResponseDTO> getUserPermissions(Long userId) {
         try {
-            // Direct access through repository
             List<Permission> permissions = userRoleRepository.findPermissionsByUserId(userId);
 
-            // Convert entities to PermissionDTOs
             List<PermissionResponseDTO> permissionDTOs = permissions.stream()
                     .map(permission -> new PermissionResponseDTO(
                             permission.getPermissionsId(),
