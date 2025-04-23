@@ -23,6 +23,11 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
+
+    @Autowired
+    @Lazy
+    private UserService userService;
 
     private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     public String generateToken(String login, List<String> roles) {
@@ -59,26 +64,18 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
-
-    @Autowired
-    @Lazy
-    private UserService userService;
-
     public Authentication getAuthentication(String token) {
         String login = extractLogin(token);
 
-        // Получаем список прав для пользователя
         List<RolePermissionDTO> rolesAndPermissions = userService.getRolesAndPermissionsByLogin(login);
 
-        // Преобразуем права в GrantedAuthority
         List<GrantedAuthority> authorities = rolesAndPermissions.stream()
-                .map(rp -> new SimpleGrantedAuthority(rp.permissionName()))  // Используем permissionName, а не роль
+                .map(rp -> new SimpleGrantedAuthority(rp.permissionName()))
                 .collect(Collectors.toList());
 
-        log.info("Предоставленные полномочия: {}", authorities);
+        logger.info("Предоставленные полномочия: {}", authorities);
 
-        // Возвращаем объект Authentication
         return new UsernamePasswordAuthenticationToken(login, null, authorities);
     }
+
 }
