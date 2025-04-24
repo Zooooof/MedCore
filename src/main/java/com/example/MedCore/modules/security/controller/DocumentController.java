@@ -52,7 +52,6 @@ public class DocumentController {
 
     @Operation(summary = "Создать документ", description = "Создание нового документа")
     @ApiResponse(responseCode = "200", description = "Документ успешно создан")
-    @PostMapping("/create")
     public ResponseEntity<DocumentDTO> createDocument(@RequestBody DocumentRequestDTO requestDTO) {
         return ResponseEntity.ok(documentService.createDocument(requestDTO));
     }
