@@ -77,8 +77,6 @@ public class DoctorServiceImpl implements DoctorService {
     @Transactional
     @Override
     public ResponseEntity<DoctorDTO> createDoctor(DoctorCreateDTO dto) {
-        Clinic clinic = clinicRepository.findById(dto.clinicId().getClinicId())
-                .orElseThrow(() -> new CommonException("Клиника не найдена"));
 
         Specialization specialization = specializationRepository.findById(dto.specializationId().getSpecializationId())
                 .orElseThrow(() -> new CommonException("Специализация не найдена"));
@@ -95,7 +93,6 @@ public class DoctorServiceImpl implements DoctorService {
         // Создаем нового доктора
         Doctor doctor = new Doctor();
         doctor.setUser(user);
-        doctor.setClinic(clinic);
         doctor.setSpecialization(specialization);
         doctor.setCreatedAt(LocalDateTime.now());
         doctor.setUpdatedAt(LocalDateTime.now());
