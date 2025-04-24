@@ -32,9 +32,6 @@ public class Doctor {
     @JoinColumn(name = "clinic_id", nullable = false)
     Clinic clinic;
 
-    @Column(name = "licence_number", length = 50)
-    String licenceNumber;
-
     @Column(name = "created_at")
     LocalDateTime createdAt;
 

@@ -12,4 +12,5 @@ public interface DocumentService {
     DocumentDTO createDocument(DocumentRequestDTO requestDTO);
     DocumentDTO updateDocument(Long id, DocumentRequestDTO requestDTO);
     String updateDocumentSOI(Long id, DocumentSOIRequestDTO requestDTO);
+    void deleteDocument(Long id);
 }
