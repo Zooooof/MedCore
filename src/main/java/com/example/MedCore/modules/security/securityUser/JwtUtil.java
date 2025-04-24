@@ -33,9 +33,9 @@ public class JwtUtil {
     public String generateToken(String login, List<String> roles) {
         return Jwts.builder()
                 .setSubject(login)
-                .claim("roles", roles)  // Добавление ролей в токен
+                .claim("roles", roles)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 часов
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -43,7 +43,7 @@ public class JwtUtil {
     public String getTokenFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);  // Extract token without the "Bearer " prefix
+            return bearerToken.substring(7);
         }
         return null;
     }
