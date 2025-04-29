@@ -14,7 +14,7 @@ public class Specialization {
     @Id
     @GeneratedValue
     @Column(name = "specialization_id")
-    Long documentId;
+    Long specializationId;
 
     @Column(name = "name", nullable = false, unique = true, length = 100)
     String name;

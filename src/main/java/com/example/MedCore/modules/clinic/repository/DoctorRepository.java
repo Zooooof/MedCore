@@ -11,6 +11,5 @@ import java.util.List;
 
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
-    //@Query(value = "SELECT * FROM doctors_all_view", nativeQuery = true)
-    //List<DoctorDTO> findAllDoctorDTO();
+    boolean existsByClinicId(Long id);
 }

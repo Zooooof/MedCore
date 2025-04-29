@@ -24,7 +24,6 @@ public record DoctorDTO (
         String email,
         String phone,
         LocalDateTime startedWorking,
-        String licenceNumber,
         String clinicName,
         String clinicAddress,
         String specialization
