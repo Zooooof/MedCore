@@ -91,6 +91,5 @@ public class DocumentController {
         } catch (CommonException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-
     }
 }

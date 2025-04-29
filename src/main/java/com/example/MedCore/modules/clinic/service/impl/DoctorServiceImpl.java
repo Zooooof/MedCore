@@ -12,6 +12,7 @@ import com.example.MedCore.modules.clinic.repository.ClinicRepository;
 import com.example.MedCore.modules.clinic.repository.DoctorRepository;
 import com.example.MedCore.modules.clinic.repository.SpecializationRepository;
 import com.example.MedCore.modules.clinic.service.DoctorService;
+import com.example.MedCore.modules.security.entity.Document;
 import com.example.MedCore.modules.security.entity.User;
 import com.example.MedCore.modules.security.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -32,7 +33,6 @@ import java.util.Optional;
 public class DoctorServiceImpl implements DoctorService {
 
     private final DoctorRepository doctorRepository;
-    private final ClinicRepository clinicRepository;
     private final SpecializationRepository specializationRepository;
     private final UserRepository userRepository;
 
@@ -41,6 +41,48 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorRepository.findAll().stream()
                 .map(this::mapToDTO)
                 .toList();
+    }
+
+    @Override
+    public Optional<DoctorDTO> getDoctorById(Long doctorId) {
+        return doctorRepository.findById(doctorId)
+                .map(this::mapToDTO);
+    }
+
+    @Transactional
+    @Override
+    public ResponseEntity<DoctorDTO> createDoctor(DoctorCreateDTO dto) {
+        Specialization specialization = specializationRepository.findById(dto.specializationId().getSpecializationId())
+                .orElseThrow(() -> new CommonException("Специализация не найдена"));
+
+        User user;
+        if (dto.userId() != null) {
+            user = userRepository.findById(dto.userId().getUserId())
+                    .orElseThrow(() -> new UserNotFoundException("Пользователь не найден. Пожалуйста, добавьте нового пользователя"));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(null);
+        }
+
+        // Создаем нового доктора
+        Doctor doctor = new Doctor();
+        doctor.setUser(user);
+        doctor.setSpecialization(specialization);
+        doctor.setCreatedAt(LocalDateTime.now());
+        doctor.setUpdatedAt(LocalDateTime.now());
+
+        doctorRepository.save(doctor);
+
+        // Преобразуем сущность в DTO и возвращаем
+        return ResponseEntity.ok(mapToDTO(doctor));
+    }
+
+    @Override
+    public void deleteDoctor(Long id) {
+        Doctor doctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new CommonException("Доктор с ID " + id + " не найден"));
+
+        doctorRepository.delete(doctor);
     }
 
     private DoctorDTO mapToDTO(Doctor doctor) {
@@ -67,40 +109,4 @@ public class DoctorServiceImpl implements DoctorService {
                 doctor.getSpecialization().getName()
         );
     }
-
-    @Override
-    public Optional<DoctorDTO> getDoctorById(Long doctorId) {
-        return doctorRepository.findById(doctorId)
-                .map(this::mapToDTO);
-    }
-
-    @Transactional
-    @Override
-    public ResponseEntity<DoctorDTO> createDoctor(DoctorCreateDTO dto) {
-
-        Specialization specialization = specializationRepository.findById(dto.specializationId().getSpecializationId())
-                .orElseThrow(() -> new CommonException("Специализация не найдена"));
-
-        User user;
-        if (dto.userId() != null) {
-            user = userRepository.findById(dto.userId().getUserId())
-                    .orElseThrow(() -> new UserNotFoundException("Пользователь не найден. Пожалуйста, добавьте нового пользователя"));
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(null);
-        }
-
-        // Создаем нового доктора
-        Doctor doctor = new Doctor();
-        doctor.setUser(user);
-        doctor.setSpecialization(specialization);
-        doctor.setCreatedAt(LocalDateTime.now());
-        doctor.setUpdatedAt(LocalDateTime.now());
-
-        doctorRepository.save(doctor);
-
-        // Преобразуем сущность в DTO и возвращаем
-        return ResponseEntity.ok(mapToDTO(doctor));
-    }
-
 }
