@@ -54,7 +54,7 @@ public class ReferralVisit {
 
     public enum VisitStatus {
         ЗАПЛАНИРОВАНО,
-        ПРОШЛО,
+        ПРОВЕДЕНО,
         ОТМЕНЕНО,
         ПЕРЕНЕСЕНО
     }

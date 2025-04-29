@@ -1,5 +1,6 @@
 package com.example.MedCore.modules.security.controller;
 
+import com.example.MedCore.exception.CommonException;
 import com.example.MedCore.modules.security.dto.DocumentDTO;
 import com.example.MedCore.modules.security.dto.DocumentRequestDTO;
 import com.example.MedCore.modules.security.dto.DocumentSOIRequestDTO;
@@ -77,5 +78,19 @@ public class DocumentController {
             @RequestBody DocumentSOIRequestDTO requestDTO
     ) {
         return ResponseEntity.ok(documentService.updateDocumentSOI(id, requestDTO));
+    }
+
+    @Operation(summary = "Удалить документ", description = "Удалить документ (требуются права CRUD_DOCUMENTS)")
+    @ApiResponse(responseCode = "200", description = "Поле успешно удалено")
+    @PreAuthorize("hasAuthority('CRUD_DOCUMENTS')")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteDocument(@PathVariable Long id){
+        try {
+            documentService.deleteDocument(id);
+            return ResponseEntity.ok("Документ с ID " + id + " успешно удалён");
+        } catch (CommonException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+
     }
 }

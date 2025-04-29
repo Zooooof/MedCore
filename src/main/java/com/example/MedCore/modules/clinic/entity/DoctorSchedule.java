@@ -25,10 +25,6 @@ public class DoctorSchedule {
     @JoinColumn(name = "doctor_id", nullable = false)
     Doctor doctor;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "clinic_id", nullable = false)
-    Clinic clinic;
-
     @Min(1)
     @Max(7)
     @Column(name = "weekday", nullable = false)

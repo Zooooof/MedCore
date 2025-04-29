@@ -1,5 +1,6 @@
 package com.example.MedCore.modules.security.service.impl;
 
+import com.example.MedCore.exception.CommonException;
 import com.example.MedCore.modules.security.dto.DocumentDTO;
 import com.example.MedCore.modules.security.dto.DocumentRequestDTO;
 import com.example.MedCore.modules.security.dto.DocumentSOIRequestDTO;
@@ -7,6 +8,8 @@ import com.example.MedCore.modules.security.entity.Document;
 import com.example.MedCore.modules.security.repository.DocumentRepository;
 import com.example.MedCore.modules.security.service.DocumentService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +17,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
 @RequiredArgsConstructor
 public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
+    private static final Logger logger = LoggerFactory.getLogger(DocumentServiceImpl.class);
 
     @Override
     public List<DocumentDTO> getAllDocuments() {
@@ -125,5 +130,13 @@ public class DocumentServiceImpl implements DocumentService {
         documentRepository.save(document);
 
         return "the data has been updated";
+    }
+
+    @Override
+    public void deleteDocument(Long id) {
+        Document document = documentRepository.findById(id)
+                .orElseThrow(() -> new CommonException("Документ с ID " + id + " не найден"));
+
+        documentRepository.delete(document);
     }
 }
