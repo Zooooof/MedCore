@@ -5,7 +5,7 @@ import com.example.MedCore.modules.clinic.entity.Specialization;
 import com.example.MedCore.modules.security.entity.User;
 
 public record DoctorCreateDTO (
-    Specialization specializationId,
-    Clinic clinicId,
-    User userId
+        Long specializationId,
+        Long clinicId,
+        Long userId
 ) {}

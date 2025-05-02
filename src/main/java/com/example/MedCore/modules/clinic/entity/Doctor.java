@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class Doctor {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "doctor_id")
     Long doctorId;
 
