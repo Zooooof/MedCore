@@ -2,8 +2,6 @@ package com.example.MedCore.modules.security.controller;
 
 import com.example.MedCore.exception.SuccessResponseDTO;
 import com.example.MedCore.modules.security.dto.*;
-import com.example.MedCore.modules.security.service.PermissionService;
-import com.example.MedCore.modules.security.service.RoleService;
 import com.example.MedCore.modules.security.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
