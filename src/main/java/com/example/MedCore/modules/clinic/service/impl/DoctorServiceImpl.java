@@ -34,6 +34,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     private final DoctorRepository doctorRepository;
     private final SpecializationRepository specializationRepository;
+    private final ClinicRepository clinicRepository;
     private final UserRepository userRepository;
 
     @Override
@@ -55,6 +56,9 @@ public class DoctorServiceImpl implements DoctorService {
         Specialization specialization = specializationRepository.findById(dto.specializationId().getSpecializationId())
                 .orElseThrow(() -> new CommonException("Специализация не найдена"));
 
+        Clinic clinic = clinicRepository.findById(dto.clinicId().getClinicId())
+                .orElseThrow(() -> new CommonException("Поликлиника не найдена"));
+
         User user;
         if (dto.userId() != null) {
             user = userRepository.findById(dto.userId().getUserId())
@@ -64,16 +68,15 @@ public class DoctorServiceImpl implements DoctorService {
                     .body(null);
         }
 
-        // Создаем нового доктора
         Doctor doctor = new Doctor();
         doctor.setUser(user);
         doctor.setSpecialization(specialization);
+        doctor.setClinic(clinic);
         doctor.setCreatedAt(LocalDateTime.now());
         doctor.setUpdatedAt(LocalDateTime.now());
 
         doctorRepository.save(doctor);
 
-        // Преобразуем сущность в DTO и возвращаем
         return ResponseEntity.ok(mapToDTO(doctor));
     }
 
