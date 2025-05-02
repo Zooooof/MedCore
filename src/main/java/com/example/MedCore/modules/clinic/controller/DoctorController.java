@@ -2,6 +2,7 @@ package com.example.MedCore.modules.clinic.controller;
 
 import com.example.MedCore.exception.CommonException;
 import com.example.MedCore.exception.ErrorResponse;
+import com.example.MedCore.exception.UserNotFoundException;
 import com.example.MedCore.modules.clinic.dto.DoctorCreateDTO;
 import com.example.MedCore.modules.clinic.dto.DoctorDTO;
 import com.example.MedCore.modules.clinic.service.DoctorService;
@@ -76,13 +77,14 @@ public class DoctorController {
     @PostMapping("/create")
     public ResponseEntity<?> createDoctor(@RequestBody @Valid DoctorCreateDTO doctorCreateDTO) {
         try {
-            ResponseEntity<DoctorDTO> response = doctorService.createDoctor(doctorCreateDTO);
-
-            if (response.getStatusCode() == HttpStatus.BAD_REQUEST) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Пользователь не найден, пожалуйста, добавьте пользователя.");
-            }
-            return ResponseEntity.status(HttpStatus.CREATED).body(response.getBody());
+            ResponseEntity<DoctorDTO> doctorDTO = doctorService.createDoctor(doctorCreateDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(doctorDTO);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        } catch (CommonException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
         } catch (Exception e) {
             ErrorResponse errorResponse = new ErrorResponse("Ошибка при создании врача: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);

@@ -53,31 +53,29 @@ public class DoctorServiceImpl implements DoctorService {
     @Transactional
     @Override
     public ResponseEntity<DoctorDTO> createDoctor(DoctorCreateDTO dto) {
-        Specialization specialization = specializationRepository.findById(dto.specializationId().getSpecializationId())
-                .orElseThrow(() -> new CommonException("Специализация не найдена"));
+        try {
+            Specialization specialization = specializationRepository.findById(dto.specializationId())
+                    .orElseThrow(() -> new CommonException("Специализация не найдена"));
 
-        Clinic clinic = clinicRepository.findById(dto.clinicId().getClinicId())
-                .orElseThrow(() -> new CommonException("Поликлиника не найдена"));
+            Clinic clinic = clinicRepository.findById(dto.clinicId())
+                    .orElseThrow(() -> new CommonException("Поликлиника не найдена"));
 
-        User user;
-        if (dto.userId() != null) {
-            user = userRepository.findById(dto.userId().getUserId())
+            User user = userRepository.findById(dto.userId())
                     .orElseThrow(() -> new UserNotFoundException("Пользователь не найден. Пожалуйста, добавьте нового пользователя"));
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(null);
+
+            Doctor doctor = new Doctor();
+            doctor.setUser(user);
+            doctor.setSpecialization(specialization);
+            doctor.setClinic(clinic);
+            doctor.setCreatedAt(LocalDateTime.now());
+            doctor.setUpdatedAt(LocalDateTime.now());
+
+            doctorRepository.save(doctor);
+
+            return ResponseEntity.ok(mapToDTO(doctor));
+        } catch (Exception e) {
+            throw new CommonException("Ошибка при создании врача: " + e.getMessage());
         }
-
-        Doctor doctor = new Doctor();
-        doctor.setUser(user);
-        doctor.setSpecialization(specialization);
-        doctor.setClinic(clinic);
-        doctor.setCreatedAt(LocalDateTime.now());
-        doctor.setUpdatedAt(LocalDateTime.now());
-
-        doctorRepository.save(doctor);
-
-        return ResponseEntity.ok(mapToDTO(doctor));
     }
 
     @Override
