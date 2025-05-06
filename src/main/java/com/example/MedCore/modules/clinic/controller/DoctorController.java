@@ -32,9 +32,9 @@ public class DoctorController {
         this.doctorService = doctorService;
     }
 
-    @Operation(summary = "Получить список врачей", description = "Доступно только с правом VIEW_ROLES")
+    @Operation(summary = "Получить список врачей", description = "Доступно только с правом CRUD_DOCTOR")
     @ApiResponse(responseCode = "200", description = "Успешно получен список врачей")
-    @PreAuthorize("hasAuthority('VIEW_ROLES')")
+    @PreAuthorize("hasAuthority('CRUD_DOCTOR')")
     @GetMapping
     public ResponseEntity<List<DoctorDTO>> getAllDoctors() {
         logger.info("Получен запрос на получение всех врачей");
@@ -52,9 +52,9 @@ public class DoctorController {
         }
     }
 
-    @Operation(summary = "Получить врача по айди", description = "Доступно только с правом CRUD_DOCUMENTS")
+    @Operation(summary = "Получить врача по айди", description = "Доступно только с правом CRUD_DOCTOR")
     @ApiResponse(responseCode = "200", description = "Успешно получен список врачей")
-    @PreAuthorize("hasAuthority('CRUD_DOCUMENTS')")
+    @PreAuthorize("hasAuthority('CRUD_DOCTOR')")
     @GetMapping("/{id}")
     public ResponseEntity<DoctorDTO> getDoctorById(@PathVariable Long id) {
         logger.info("Получен запрос на получение врача с ID: {}", id);
@@ -71,9 +71,9 @@ public class DoctorController {
         }
     }
 
-    @Operation(summary = "Добавить врача", description = "Доступно только с правом VIEW_ROLES")
+    @Operation(summary = "Добавить врача", description = "Доступно только с правом CRUD_DOCTOR")
     @ApiResponse(responseCode = "201", description = "Врач успешно зарегистрирован")
-    @PreAuthorize("hasAuthority('VIEW_ROLES')")
+    @PreAuthorize("hasAuthority('CRUD_DOCTOR')")
     @PostMapping("/create")
     public ResponseEntity<?> createDoctor(@RequestBody @Valid DoctorCreateDTO doctorCreateDTO) {
         try {
@@ -91,9 +91,9 @@ public class DoctorController {
         }
     }
 
-    @Operation(summary = "Удалить доктора", description = "Удалить доктора (требуются права CRUD_DOCUMENTS)")
+    @Operation(summary = "Удалить доктора", description = "Удалить доктора (требуются права CRUD_DOCTOR)")
     @ApiResponse(responseCode = "200", description = "Поле успешно удалено")
-    @PreAuthorize("hasAuthority('CRUD_DOCUMENTS')")
+    @PreAuthorize("hasAuthority('CRUD_DOCTOR')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteDoсtor(@PathVariable Long id){
         try {

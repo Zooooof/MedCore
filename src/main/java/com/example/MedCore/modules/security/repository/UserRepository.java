@@ -23,5 +23,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE u.login = :login")
     List<RolePermissionDTO> findRolesAndPermissionsByLogin(@Param("login") String login);
     Optional<User> findByDocument(Document document);
-
 }

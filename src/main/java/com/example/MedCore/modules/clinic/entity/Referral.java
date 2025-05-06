@@ -1,5 +1,7 @@
 package com.example.MedCore.modules.clinic.entity;
 
+import com.example.MedCore.modules.security.entity.Document;
+import com.example.MedCore.modules.security.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,8 +28,8 @@ public class Referral {
     Doctor doctor;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    Doctor user;
+    @JoinColumn(name = "document_id", nullable = false)
+    Document document;
 
     @Column
     String reason;

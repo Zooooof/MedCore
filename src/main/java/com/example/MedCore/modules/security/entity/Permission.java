@@ -18,7 +18,7 @@ import java.util.Set;
 public class Permission {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "permissions_id")
     Long permissionsId;
 

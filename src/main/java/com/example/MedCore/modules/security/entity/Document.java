@@ -18,7 +18,7 @@ import java.util.List;
 public class Document {
     @Getter
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "document_id")
     Long documentId;
     @Column(nullable = false, length = 60)
