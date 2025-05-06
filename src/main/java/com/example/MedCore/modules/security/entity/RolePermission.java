@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class RolePermission {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_permission_id")
     Long rolePermissionId;
 

@@ -26,9 +26,9 @@ public class SpecializationController {
     private final SpecializationService specializationService;
     private static final Logger logger = LoggerFactory.getLogger(ClinicController.class);
 
-    @Operation(summary = "Получить список специализаций", description = "Доступно только с правом VIEW_ROLES")
+    @Operation(summary = "Получить список специализаций", description = "Доступно только с правом CRUD_SPECIALIZATION")
     @ApiResponse(responseCode = "200", description = "Успешно получен список специализаций")
-    @PreAuthorize("hasAuthority('VIEW_ROLES')")
+    @PreAuthorize("hasAuthority('CRUD_SPECIALIZATION')")
     @GetMapping
     public ResponseEntity<List<Specialization>> getAllDoctors() {
         logger.info("Получен запрос на получение всех специализаций");

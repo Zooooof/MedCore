@@ -18,7 +18,7 @@ import java.util.Set;
 public class RoleDB {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id")
     Long roleId;
 
