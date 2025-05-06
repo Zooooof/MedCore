@@ -71,22 +71,22 @@ public class DoctorController {
         }
     }
 
-    @Operation(summary = "Добавить врача", description = "Доступно только с правом CRUD_DOCUMENTS")
+    @Operation(summary = "Добавить врача", description = "Доступно только с правом VIEW_ROLES")
     @ApiResponse(responseCode = "201", description = "Врач успешно зарегистрирован")
-    @PreAuthorize("hasAuthority('CRUD_DOCUMENTS')")
+    @PreAuthorize("hasAuthority('VIEW_ROLES')")
     @PostMapping("/create")
     public ResponseEntity<?> createDoctor(@RequestBody @Valid DoctorCreateDTO doctorCreateDTO) {
         try {
+            logger.info("Начало создания врача в контроллере");
             ResponseEntity<DoctorDTO> doctorDTO = doctorService.createDoctor(doctorCreateDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(doctorDTO);
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
-        } catch (CommonException e) {
+        } catch (UserNotFoundException | CommonException e) {
+            logger.error("Произошла ошибка при получении врача", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
         } catch (Exception e) {
             ErrorResponse errorResponse = new ErrorResponse("Ошибка при создании врача: " + e.getMessage());
+            logger.error("Произошла ошибка при получении врача", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
@@ -95,7 +95,7 @@ public class DoctorController {
     @ApiResponse(responseCode = "200", description = "Поле успешно удалено")
     @PreAuthorize("hasAuthority('CRUD_DOCUMENTS')")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteDoсtor (@PathVariable Long id){
+    public ResponseEntity<?> deleteDoсtor(@PathVariable Long id){
         try {
             doctorService.deleteDoctor(id);
             return ResponseEntity.ok("Доктор с ID " + id + " успешно удалён");

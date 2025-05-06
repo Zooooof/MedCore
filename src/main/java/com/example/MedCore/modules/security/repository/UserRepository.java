@@ -1,6 +1,7 @@
 package com.example.MedCore.modules.security.repository;
 
 import com.example.MedCore.modules.security.dto.RolePermissionDTO;
+import com.example.MedCore.modules.security.entity.Document;
 import com.example.MedCore.modules.security.entity.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "FROM User u JOIN u.userRoles ur JOIN ur.role r JOIN r.rolePermissions rp JOIN rp.permission p " +
             "WHERE u.login = :login")
     List<RolePermissionDTO> findRolesAndPermissionsByLogin(@Param("login") String login);
+    Optional<User> findByDocument(Document document);
+
 }
