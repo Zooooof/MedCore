@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Table(name = "referrals")
 public class Referral {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "referral_id")
     Long referralId;
 

@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @Table(name = "specialization")
 public class Specialization {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "specialization_id")
     Long specializationId;
 
