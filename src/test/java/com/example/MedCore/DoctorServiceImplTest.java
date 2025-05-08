@@ -100,7 +100,6 @@ class DoctorServiceImplTest {
         when(userRepository.findByDocument(doc)).thenReturn(Optional.of(user));
         when(doctorRepository.existsByUser(user)).thenReturn(true);
 
-        // THEN
         assertThrows(CommonException.class, () -> doctorService.createDoctor(dto));
     }
 

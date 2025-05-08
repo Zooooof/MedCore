@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Table(name = "referral_visits")
 public class ReferralVisit {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "visit_id")
     Long visitId;
 
