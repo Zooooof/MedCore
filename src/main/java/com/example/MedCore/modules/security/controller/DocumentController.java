@@ -9,6 +9,7 @@ import com.example.MedCore.modules.security.service.impl.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +55,7 @@ public class DocumentController {
     @Operation(summary = "Создать документ", description = "Создание нового документа")
     @ApiResponse(responseCode = "200", description = "Документ успешно создан")
     @PostMapping("/create")
-    public ResponseEntity<DocumentDTO> createDocument(@RequestBody DocumentRequestDTO requestDTO) {
+    public ResponseEntity<DocumentDTO> createDocument(@Valid @RequestBody DocumentRequestDTO requestDTO) {
         return ResponseEntity.ok(documentService.createDocument(requestDTO));
     }
 

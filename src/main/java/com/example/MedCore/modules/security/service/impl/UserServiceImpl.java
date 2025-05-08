@@ -39,11 +39,11 @@ public class UserServiceImpl implements UserService {
         validatorUser.validateRegisterRequest(requestDTO);
 
         if (userRepository.existsByLogin(requestDTO.login())) {
-            throw new CommonException("Login already exists");
+            throw new CommonException("Логин уже существует");
         }
 
         Document document = documentRepository.findById(requestDTO.document_id())
-                .orElseThrow(() -> new CommonException("There is no document with such an id"));
+                .orElseThrow(() -> new CommonException("Документа с таким идентификатором не существует"));
 
         User user = new User();
         user.setLogin(requestDTO.login());
@@ -56,15 +56,14 @@ public class UserServiceImpl implements UserService {
         User savedUser = userRepository.save(user);
 
         RoleDB patientRole = roleRepository.findById(202L)
-                .orElseThrow(() -> new CommonException("Patient role not found"));
+                .orElseThrow(() -> new CommonException("Роль пациента не найдена"));
         UserRole userRole = new UserRole();
         userRole.setUser(savedUser);
         userRole.setRole(patientRole);
         userRoleRepository.save(userRole);
 
-        logger.info("User registered successfully with patient role: {}", savedUser.getLogin());
+        logger.info("Пользователь успешно зарегистрировался с ролью пациента: {}", savedUser.getLogin());
 
-        // Return DTO user record
         return new UserDTO(
                 savedUser.getLogin(),
                 savedUser.getPassword_hash(),
@@ -86,10 +85,10 @@ public class UserServiceImpl implements UserService {
         User user;
         if (loginOrEmail.contains("@")) {
             user = userRepository.findByEmail(loginOrEmail)
-                    .orElseThrow(() -> new CommonException("User not found"));
+                    .orElseThrow(() -> new CommonException("Пользователь не найден"));
         } else {
             user = userRepository.findByLogin(loginOrEmail)
-                    .orElseThrow(() -> new CommonException("User not found"));
+                    .orElseThrow(() -> new CommonException("Пользователь не найден"));
         }
         logger.info(user.getUserRoles().toString());
 
@@ -118,7 +117,7 @@ public class UserServiceImpl implements UserService {
                     .map(role -> new RoleResponseDTO(role.getRoleId(), role.getRoleName()))
                     .collect(Collectors.toList());
         } catch (Exception e) {
-            logger.error("Error while fetching roles for user with ID: {}", userId, e);
+            logger.error("Ошибка при выборе ролей для пользователя с идентификатором: {}", userId, e);
             throw e;
         }
     }
@@ -138,7 +137,7 @@ public class UserServiceImpl implements UserService {
 
             return permissionDTOs;
         } catch (Exception e) {
-            logger.error("Error while fetching permissions for user with ID: {}", userId, e);
+            logger.error("Ошибка при получении разрешений для пользователя с идентификатором: {}", userId, e);
             throw e;
         }
     }
@@ -146,9 +145,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void assignRoleToUser(UserRoleAssignmentDTO assignmentDTO) {
         User user = userRepository.findById(assignmentDTO.userId())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
         RoleDB role = roleRepository.findById(assignmentDTO.roleId())
-                .orElseThrow(() -> new CommonException("Role not found"));
+                .orElseThrow(() -> new CommonException("Роль не найдена"));
 
         UserRole userRole = new UserRole();
         userRole.setUser(user);
@@ -162,8 +161,8 @@ public class UserServiceImpl implements UserService {
         try {
             return userRepository.findRolesAndPermissionsByLogin(login);
         } catch (Exception e) {
-            logger.error("Error while fetching roles and permissions for login: {}", login, e);
-            throw new CommonException("Failed to fetch roles and permissions");
+            logger.error("Ошибка при выборе ролей и разрешений для входа в систему: {}", login, e);
+            throw new CommonException("Не удалось получить роли и разрешения");
         }
     }
 }

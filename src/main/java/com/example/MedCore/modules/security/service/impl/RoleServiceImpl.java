@@ -36,7 +36,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public RoleDB getRoleById(Long roleId) {
         return roleRepository.findById(roleId)
-                .orElseThrow(() -> new UsernameNotFoundException("Role not found with ID: " + roleId));
+                .orElseThrow(() -> new UsernameNotFoundException("Роль с идентификатором не найдена: " + roleId));
     }
 
     @Override
@@ -51,30 +51,30 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDB addRole(RoleDTO roleDTO) {
-        logger.info("Adding role: {}", roleDTO);
+        logger.info("Добавление роли: {}", roleDTO);
 
         RoleDB role;
 
         if (roleDTO.parentRoleId() != null) {
-            logger.info("Looking for parent role with ID: {}", roleDTO.parentRoleId());
+            logger.info("Ищем родительскую роль с идентификатором: {}", roleDTO.parentRoleId());
             RoleDB parentRole = roleRepository.findById(roleDTO.parentRoleId())
-                    .orElseThrow(() -> new CommonException("Parent role not found with ID: " + roleDTO.parentRoleId()));
+                    .orElseThrow(() -> new CommonException("Родительская роль не найдена с идентификатором: " + roleDTO.parentRoleId()));
             role = new RoleDB(roleDTO.roleName(), roleDTO.description(), parentRole);
         } else {
             role = new RoleDB(roleDTO.roleName(), roleDTO.description());
         }
 
         RoleDB savedRole = roleRepository.save(role);
-        logger.info("Role successfully saved: {}", savedRole);
+        logger.info("Роль успешно сохранена: {}", savedRole);
         return savedRole;
     }
 
     @Override
     public void assignPermissionToRole(RolePermissionAssignmentDTO assignmentDTO) {
         RoleDB role = roleRepository.findById(assignmentDTO.roleId())
-                .orElseThrow(() -> new UsernameNotFoundException("Role not found with ID: " + assignmentDTO.roleId()));
+                .orElseThrow(() -> new UsernameNotFoundException("Роль с идентификатором не найдена: " + assignmentDTO.roleId()));
         Permission permission = permissionRepository.findById(assignmentDTO.permissionId())
-                .orElseThrow(() -> new CommonException("Permission not found with ID: " + assignmentDTO.permissionId()));
+                .orElseThrow(() -> new CommonException("Разрешение не найдено с идентификатором: " + assignmentDTO.permissionId()));
 
         RolePermission rolePermission = new RolePermission(role, permission);
         rolePermissionRepository.save(rolePermission);
