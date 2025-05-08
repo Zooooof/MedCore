@@ -1,5 +1,6 @@
 package com.example.MedCore.modules.security.controller;
 
+import com.example.MedCore.exception.SuccessResponse;
 import com.example.MedCore.exception.SuccessResponseDTO;
 import com.example.MedCore.modules.security.dto.*;
 import com.example.MedCore.modules.security.service.UserService;
@@ -79,8 +80,12 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "Роль успешно назначена пользователю")
     @PreAuthorize("hasAuthority('ASSIGN_ROLE')")
     @PostMapping("/assign-role")
-    public ResponseEntity<Void> assignRoleToUser(@RequestBody UserRoleAssignmentDTO assignmentDTO) {
+    public ResponseEntity<SuccessResponse> assignRoleToUser(@RequestBody UserRoleAssignmentDTO assignmentDTO) {
         userService.assignRoleToUser(assignmentDTO);
-        return ResponseEntity.ok().build();
+        SuccessResponse response = new SuccessResponse(
+                HttpStatus.ACCEPTED.value(),
+                "Роль успешно присвоена пользователю "+assignmentDTO.userId()
+        );
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 }

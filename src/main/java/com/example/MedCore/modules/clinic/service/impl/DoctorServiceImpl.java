@@ -23,6 +23,7 @@ import com.example.MedCore.modules.security.repository.UserRoleRepository;
 import com.example.MedCore.modules.security.service.impl.DocumentServiceImpl;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,9 +65,8 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Transactional
     @Override
-    public ResponseEntity<DoctorDTO> createDoctor(DoctorCreateDTO dto) {
+    public ResponseEntity<DoctorDTO> createDoctor(@Valid DoctorCreateDTO dto) {
         try {
-            // Логируем начало выполнения метода
             logger.info("Начало создания врача: {}", dto);
 
             Specialization specialization = specializationRepository.findById(dto.specializationId())
@@ -75,28 +75,24 @@ public class DoctorServiceImpl implements DoctorService {
             Clinic clinic = clinicRepository.findById(dto.clinicId())
                     .orElseThrow(() -> new CommonException("Поликлиника не найдена"));
 
-            // Поиск документа по ФИО
             Document document = documentRepository.findByFirstnameAndLastnameAndSurname(
                     dto.firstname(),
                     dto.lastname(),
                     dto.surname()
-            ).orElseThrow(() -> new CommonException("Документ не найден по введённым данным"));
+            ).orElseThrow(() -> new CommonException("Документ с указанными ФИО не найден"));
 
-            // Поиск пользователя по документу
             Optional<User> existingUserOpt = userRepository.findByDocument(document);
             User user;
 
             if (existingUserOpt.isPresent()) {
                 user = existingUserOpt.get();
 
-                // Проверка — не зарегистрирован ли он уже как доктор
                 if (doctorRepository.existsByUser(user)) {
                     throw new CommonException("Этот пользователь уже зарегистрирован как врач");
                 }
             } else {
-                // Новый пользователь
                 if (userRepository.existsByLogin(dto.login())) {
-                    throw new CommonException("Login уже существует");
+                    throw new CommonException("Логин уже занят");
                 }
 
                 user = new User();
@@ -109,14 +105,12 @@ public class DoctorServiceImpl implements DoctorService {
                 userRepository.save(user);
 
                 RoleDB patientRole = roleRepository.findById(202L)
-                        .orElseThrow(() -> new CommonException("Patient role not found"));
+                        .orElseThrow(() -> new CommonException("Роль не найдена"));
                 UserRole userRole = new UserRole();
                 userRole.setUser(user);
                 userRole.setRole(patientRole);
                 userRoleRepository.save(userRole);
             }
-
-            // Создание доктора
             Doctor doctor = new Doctor();
             doctor.setUser(user);
             doctor.setSpecialization(specialization);

@@ -40,7 +40,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public DocumentDTO getDocumentById(Long id) {
         Document document = documentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Document not found"));
+                .orElseThrow(() -> new RuntimeException("Документ не найден"));
         return new DocumentDTO(
                 document.getDocumentId(),
                 document.getFirstname(),
@@ -53,7 +53,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public DocumentDTO createDocument(DocumentRequestDTO requestDTO) {
         if (documentRepository.existsBySerialAndNumber(requestDTO.serialAndNumber())) {
-            throw new RuntimeException("Document with this serial and number already exists");
+            throw new RuntimeException("Документ с такой серией и номером уже существует");
         }
 
         Document document = new Document();
@@ -80,14 +80,14 @@ public class DocumentServiceImpl implements DocumentService {
                     savedDocument.getDateOfBirth()
             );
         } catch (Exception e) {
-            throw new RuntimeException("Error while saving the document: " + e.getMessage(), e);
+            throw new RuntimeException("Ошибка при сохранении документа: " + e.getMessage(), e);
         }
     }
 
     @Override
     public DocumentDTO updateDocument(Long id, DocumentRequestDTO requestDTO) {
         Document document = documentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Document not found"));
+                .orElseThrow(() -> new RuntimeException("Документ не найден"));
 
         document.setFirstname(requestDTO.firstname());
         document.setLastname(requestDTO.lastname());
@@ -114,14 +114,14 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public String updateDocumentSOI(Long id, DocumentSOIRequestDTO requestDTO) {
         Document document = documentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Document not found"));
+                .orElseThrow(() -> new RuntimeException("Документ не найден"));
 
         if (documentRepository.existsByPolicy(requestDTO.policy())) {
-            throw new RuntimeException("Policy already exists");
+            throw new RuntimeException("Полис уже существует");
         }
 
         if (documentRepository.existsByInn(requestDTO.inn())) {
-            throw new RuntimeException("Inn already exists");
+            throw new RuntimeException("ИНН уже существует");
         }
 
         document.setSnils(requestDTO.snils());

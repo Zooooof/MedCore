@@ -53,7 +53,6 @@ public class ReferralVisitServiceImpl implements ReferralVisitService {
         LocalDateTime visitStart = request.visitDatetime();
         LocalDateTime visitEnd = visitStart.plusMinutes(request.durationMinutes());
 
-        // Проверка расписания врача
         int weekday = visitStart.getDayOfWeek().getValue();
         logger.info("Ищем расписание врача для дня недели: {}", weekday);
         DoctorSchedule schedule = doctorScheduleRepository
@@ -68,7 +67,6 @@ public class ReferralVisitServiceImpl implements ReferralVisitService {
             throw new IllegalArgumentException("Время приёма вне расписания врача");
         }
 
-        // Проверка на занятие времени
         if (referralVisitRepository.existsByDoctorAndTimeRange(doctor.getDoctorId(), visitStart, visitEnd)) {
             logger.error("Врач занят в это время. Начало: {}, Конец: {}", visitStart, visitEnd);
             throw new IllegalStateException("Врач занят в это время");
@@ -83,7 +81,6 @@ public class ReferralVisitServiceImpl implements ReferralVisitService {
         logger.info("Создание направления для пациента: {} {} {}. Причина: {}", patient.getFirstname(), patient.getLastname(), patient.getSurname(), request.reason());
         referralRepository.save(referral);
 
-        // Создание приёма
         ReferralVisit visit = new ReferralVisit();
         visit.setReferral(referral);
         visit.setVisitDatetime(visitStart);
