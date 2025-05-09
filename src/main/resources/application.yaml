@@ -17,3 +17,7 @@ spring:
 logging:
   level:
     com.example: DEBUG
+    root: INFO
+  file:
+    name: C:/Users/serez/IdeaProjects/MedCore/logs/app.log
+
