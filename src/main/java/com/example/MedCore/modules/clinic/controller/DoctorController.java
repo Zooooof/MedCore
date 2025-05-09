@@ -103,4 +103,13 @@ public class DoctorController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @Operation(summary = "Получить айди врача по логину", description = "Доступно только с правом CRUD_DOCTOR")
+    @ApiResponse(responseCode = "200", description = "Успешно получен айди врача")
+    @PreAuthorize("hasAuthority('CRUD_DOCTOR')")
+    @GetMapping("/id-by-login")
+    public ResponseEntity<Long> getDoctorIdByLogin(@RequestParam String login) {
+        Long doctorId = doctorService.getDoctorIdByLogin(login);
+        return ResponseEntity.ok(doctorId);
+    }
 }
