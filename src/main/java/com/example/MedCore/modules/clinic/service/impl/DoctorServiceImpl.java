@@ -22,6 +22,7 @@ import com.example.MedCore.modules.security.repository.UserRepository;
 import com.example.MedCore.modules.security.repository.UserRoleRepository;
 import com.example.MedCore.modules.security.service.impl.DocumentServiceImpl;
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -162,5 +163,10 @@ public class DoctorServiceImpl implements DoctorService {
                 doctor.getClinic().getAddress(),
                 doctor.getSpecialization().getName()
         );
+    }
+
+    public Long getDoctorIdByLogin(String login) {
+        return doctorRepository.findDoctorIdByUserLogin(login)
+                .orElseThrow(() -> new EntityNotFoundException("Доктор с логином " + login + " не найден"));
     }
 }

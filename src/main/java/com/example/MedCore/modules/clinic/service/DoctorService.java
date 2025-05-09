@@ -14,4 +14,5 @@ public interface DoctorService {
     Optional<DoctorDTO> getDoctorById(Long doctorId);
     ResponseEntity<DoctorDTO> createDoctor(DoctorCreateDTO doctorCreateDTO);
     void deleteDoctor(Long id);
+    Long getDoctorIdByLogin(String login);
 }
