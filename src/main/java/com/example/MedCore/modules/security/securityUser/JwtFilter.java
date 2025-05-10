@@ -30,11 +30,11 @@ public class JwtFilter extends OncePerRequestFilter {
             if (jwtUtil.isValidToken(token)) {
                 Authentication authentication = jwtUtil.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                logger.info("Authentication set for user: " + authentication.getName());
+                logger.info("Аутентификация, установленная для пользователя: " + authentication.getName());
             } else {
-                logger.info("Invalid token");
+                logger.info("Недопустимый токен");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Invalid token");
+                response.getWriter().write("Недопустимый токен");
                 return;
             }
         }

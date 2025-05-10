@@ -77,5 +77,4 @@ public class JwtUtil {
 
         return new UsernamePasswordAuthenticationToken(login, null, authorities);
     }
-
 }

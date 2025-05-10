@@ -2,8 +2,6 @@ package com.example.MedCore.modules.clinic.service;
 
 import com.example.MedCore.modules.clinic.dto.DoctorCreateDTO;
 import com.example.MedCore.modules.clinic.dto.DoctorDTO;
-import com.example.MedCore.modules.clinic.entity.Doctor;
-import com.example.MedCore.modules.security.dto.DocumentDTO;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

@@ -8,32 +8,32 @@ import org.springframework.stereotype.Component;
 public class ValidatorUser {
     public void validateRegisterRequest(UserRequestDTO requestDTO) {
         if (requestDTO.login() == null || requestDTO.login().isEmpty()) {
-            throw new IllegalArgumentException("Login cannot be null or empty");
+            throw new IllegalArgumentException("Логин не может быть нулевым или пустым");
         }
         if (requestDTO.password() == null || requestDTO.password().isEmpty()) {
-            throw new IllegalArgumentException("Password cannot be null or empty");
+            throw new IllegalArgumentException("Пароль не может быть нулевым или пустым");
         }
         if (requestDTO.email() == null || requestDTO.email().isEmpty()) {
-            throw new IllegalArgumentException("Email cannot be null or empty");
+            throw new IllegalArgumentException("Пароль не может быть нулевым или пустым");
         }
         if (requestDTO.phone() == null || requestDTO.phone().isEmpty()) {
-            throw new IllegalArgumentException("Phone cannot be null or empty");
+            throw new IllegalArgumentException("Номер телефона не может быть нулевым или пустым");
         }
         if (requestDTO.status() == null || requestDTO.status().isEmpty()) {
-            throw new IllegalArgumentException("Status cannot be null or empty");
+            throw new IllegalArgumentException("Статус не может быть нулевым или пустым");
         }
         if (requestDTO.document_id() == null) {
-            throw new IllegalArgumentException("Document ID cannot be null");
+            throw new IllegalArgumentException("Айди документа не может быть нулевым или пустым");
         }
     }
 
     public void validateLoginRequest(UserLoginRequestDTO requestDTO) {
         // Валидация логина или email
         if (requestDTO.loginOrEmail() == null || requestDTO.loginOrEmail().isEmpty()) {
-            throw new IllegalArgumentException("Login or Email cannot be null or empty");
+            throw new IllegalArgumentException("Логин или адрес электронной почты не могут быть пустыми");
         }
         if (requestDTO.password() == null || requestDTO.password().isEmpty()) {
-            throw new IllegalArgumentException("Password cannot be null or empty");
+            throw new IllegalArgumentException("Пароль не может быть нулевым или незаполненным");
         }
     }
 }

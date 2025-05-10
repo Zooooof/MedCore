@@ -8,8 +8,4 @@ public record UserDTO(
         String email,
         String phone,
         String status
-) {
-    public UserDTO {
-        // Можно добавить проверки, если нужно (например, на валидность email, phone и т.д.)
-    }
-}
+) {}

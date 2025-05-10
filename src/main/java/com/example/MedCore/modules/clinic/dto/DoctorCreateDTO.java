@@ -1,13 +1,6 @@
 package com.example.MedCore.modules.clinic.dto;
 
-import com.example.MedCore.modules.clinic.entity.Clinic;
-import com.example.MedCore.modules.clinic.entity.Specialization;
-import com.example.MedCore.modules.security.entity.User;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
-
-
-import java.time.LocalDate;
 
 public record DoctorCreateDTO(
         Long specializationId,
@@ -18,11 +11,11 @@ public record DoctorCreateDTO(
         String surname,
 
         @NotBlank(message = "Логин не может быть нулевым или пустым")
-        @Size(min = 8, max = 20, message = "Login must be between 8 and 20 characters")
+        @Size(min = 8, max = 20, message = "Длина логина должна составлять от 8 до 20 символов")
         String login,
 
         @NotBlank(message = "Пароль не может быть нулевым или незаполненным")
-        @Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters")
+        @Size(min = 8, max = 20, message = "Пароль должен содержать от 8 до 20 символов")
         @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).*$", message = "Пароль должен содержать по крайней мере одну цифру, одну строчную букву, одну заглавную букву, один специальный символ и не содержать пробелов")
         String password,
 

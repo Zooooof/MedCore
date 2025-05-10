@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
-    private static final Logger logger = LoggerFactory.getLogger(DocumentServiceImpl.class);
 
     @Override
     public List<DocumentDTO> getAllDocuments() {
@@ -129,7 +128,7 @@ public class DocumentServiceImpl implements DocumentService {
         document.setInn(requestDTO.inn());
         documentRepository.save(document);
 
-        return "the data has been updated";
+        return "данные были обновлены";
     }
 
     @Override

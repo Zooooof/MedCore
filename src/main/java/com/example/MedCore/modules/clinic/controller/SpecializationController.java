@@ -1,8 +1,6 @@
 package com.example.MedCore.modules.clinic.controller;
 
-import com.example.MedCore.modules.clinic.entity.Clinic;
 import com.example.MedCore.modules.clinic.entity.Specialization;
-import com.example.MedCore.modules.clinic.service.ClinicService;
 import com.example.MedCore.modules.clinic.service.SpecializationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -13,10 +13,7 @@ import com.example.MedCore.modules.clinic.repository.ReferralRepository;
 import com.example.MedCore.modules.clinic.repository.ReferralVisitRepository;
 import com.example.MedCore.modules.clinic.service.ReferralVisitService;
 import com.example.MedCore.modules.security.entity.Document;
-import com.example.MedCore.modules.security.entity.User;
 import com.example.MedCore.modules.security.repository.DocumentRepository;
-import com.example.MedCore.modules.security.repository.UserRepository;
-import com.example.MedCore.modules.security.service.impl.DocumentServiceImpl;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -73,7 +70,6 @@ public class ReferralVisitServiceImpl implements ReferralVisitService {
         }
 
         logger.error(String.valueOf(doctor.getDoctorId()));
-        // Создание направления
         Referral referral = new Referral();
         referral.setDoctor(doctor);
         referral.setDocument(patient);
@@ -100,7 +96,6 @@ public class ReferralVisitServiceImpl implements ReferralVisitService {
                     Timestamp startTimestamp = (Timestamp) row[0];
                     Timestamp endTimestamp = (Timestamp) row[1];
 
-                    // Преобразуем в LocalDateTime
                     LocalDateTime start = startTimestamp.toLocalDateTime();
                     LocalDateTime end = endTimestamp.toLocalDateTime();
 
@@ -125,9 +120,8 @@ public class ReferralVisitServiceImpl implements ReferralVisitService {
 
     @Override
     public List<PatientResponseDTO> getPatientsByDoctor(Long doctorId) {
-        if (!doctorRepository.existsById(doctorId)) {
+        if (!doctorRepository.existsById(doctorId))
             throw new EntityNotFoundException("Врач не найден");
-        }
 
         List<Document> patients = referralVisitRepository.findDistinctPatientsByDoctorId(doctorId);
         return patients.stream()
