@@ -13,6 +13,6 @@ import java.util.Optional;
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     boolean existsByUser(User user);
-    @Query("SELECT d.doctorId FROM Doctor d WHERE d.user.login = :login")
-    Optional<Long> findDoctorIdByUserLogin(@Param("login") String login);
+    @Query("SELECT d.doctorId FROM Doctor d WHERE d.user.document.firstname = :firstname AND d.user.document.lastname = :lastname AND d.user.document.surname = :surname")
+    Optional<Long> findDoctorIdByUserFio(String firstname, String lastname, String surname);
 }

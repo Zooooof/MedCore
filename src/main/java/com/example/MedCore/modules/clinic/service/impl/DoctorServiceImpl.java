@@ -12,6 +12,7 @@ import com.example.MedCore.modules.clinic.repository.ClinicRepository;
 import com.example.MedCore.modules.clinic.repository.DoctorRepository;
 import com.example.MedCore.modules.clinic.repository.SpecializationRepository;
 import com.example.MedCore.modules.clinic.service.DoctorService;
+import com.example.MedCore.modules.security.dto.FioDTO;
 import com.example.MedCore.modules.security.entity.Document;
 import com.example.MedCore.modules.security.entity.RoleDB;
 import com.example.MedCore.modules.security.entity.User;
@@ -165,8 +166,8 @@ public class DoctorServiceImpl implements DoctorService {
         );
     }
 
-    public Long getDoctorIdByLogin(String login) {
-        return doctorRepository.findDoctorIdByUserLogin(login)
-                .orElseThrow(() -> new EntityNotFoundException("Доктор с логином " + login + " не найден"));
+    public Long getDoctorIdByFio(FioDTO fioDTO) {
+        return doctorRepository.findDoctorIdByUserFio(fioDTO.firstname(), fioDTO.lastname(), fioDTO.surname())
+                .orElseThrow(() -> new EntityNotFoundException("Доктор с фио " + fioDTO.firstname() + " " + fioDTO.lastname()+" "+ fioDTO.surname() + " не найден"));
     }
 }
