@@ -1,7 +1,6 @@
 package com.example.MedCore.modules.clinic.entity;
 
 import com.example.MedCore.modules.security.entity.Document;
-import com.example.MedCore.modules.security.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

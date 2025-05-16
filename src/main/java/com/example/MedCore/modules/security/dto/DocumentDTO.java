@@ -1,8 +1,5 @@
 package com.example.MedCore.modules.security.dto;
 
-
-import lombok.Getter;
-
 import java.time.LocalDate;
 
 public record DocumentDTO(

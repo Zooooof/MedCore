@@ -6,6 +6,7 @@ import com.example.MedCore.exception.UserNotFoundException;
 import com.example.MedCore.modules.clinic.dto.DoctorCreateDTO;
 import com.example.MedCore.modules.clinic.dto.DoctorDTO;
 import com.example.MedCore.modules.clinic.service.DoctorService;
+import com.example.MedCore.modules.security.dto.FioDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -104,12 +105,12 @@ public class DoctorController {
         }
     }
 
-    @Operation(summary = "Получить айди врача по логину", description = "Доступно только с правом CRUD_DOCTOR")
+    @Operation(summary = "Получить айди врача по фиол", description = "Доступно только с правом CRUD_DOCTOR")
     @ApiResponse(responseCode = "200", description = "Успешно получен айди врача")
     @PreAuthorize("hasAuthority('CRUD_DOCTOR')")
-    @GetMapping("/id-by-login")
-    public ResponseEntity<Long> getDoctorIdByLogin(@RequestParam String login) {
-        Long doctorId = doctorService.getDoctorIdByLogin(login);
+    @PostMapping("/id-by-fio")
+    public ResponseEntity<Long> getDoctorIdByFio(@RequestBody FioDTO fioDTO) {
+        Long doctorId = doctorService.getDoctorIdByFio(fioDTO);
         return ResponseEntity.ok(doctorId);
     }
 }

@@ -4,25 +4,25 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 
 public record UserRequestDTO(
-        @NotBlank(message = "Login cannot be null or empty")
-        @Size(min = 8, max = 20, message = "Login must be between 8 and 20 characters")
+        @NotBlank(message = "Логин не может быть нулевым или пустым")
+        @Size(min = 8, max = 20, message = "Длина логина должна составлять от 8 до 20 символов")
         String login,
 
-        @NotBlank(message = "Password cannot be null or empty")
-        @Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters")
+        @NotBlank(message = "Пароль не может быть нулевым или незаполненным")
+        @Size(min = 8, max = 20, message = "Пароль должен содержать от 8 до 20 символов")
         @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).*$", message = "Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and no spaces")
         String password,
 
-        @NotBlank(message = "Email cannot be null or empty")
-        @Email(message = "Email should be valid")
+        @NotBlank(message = "Адрес электронной почты не может быть пустым")
+        @Email(message = "Адрес электронной почты должен быть действительным")
         String email,
 
-        @NotBlank(message = "Phone cannot be null or empty")
+        @NotBlank(message = "Номер телефона не может быть нулевым или пустым")
         String phone,
 
-        @NotBlank(message = "Status cannot be null or empty")
+        @NotBlank(message = "Статус не может быть нулевым или пустым")
         String status,
 
-        @NotNull(message = "Document ID cannot be null")
+        @NotNull(message = "Идентификатор документа не может быть пустым")
         Long document_id
 ) {}

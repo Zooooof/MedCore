@@ -1,7 +1,6 @@
 package com.example.MedCore.modules.clinic.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

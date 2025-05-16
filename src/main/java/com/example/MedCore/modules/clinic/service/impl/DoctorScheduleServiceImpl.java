@@ -2,13 +2,10 @@ package com.example.MedCore.modules.clinic.service.impl;
 
 import com.example.MedCore.modules.clinic.dto.DoctorScheduleResponseDTO;
 import com.example.MedCore.modules.clinic.dto.DoctorVisitResponseDTO;
-import com.example.MedCore.modules.clinic.entity.DoctorSchedule;
-import com.example.MedCore.modules.clinic.entity.ReferralVisit;
 import com.example.MedCore.modules.clinic.repository.DoctorScheduleRepository;
 import com.example.MedCore.modules.clinic.repository.ReferralVisitRepository;
 import com.example.MedCore.modules.clinic.service.DoctorScheduleService;
 import com.example.MedCore.modules.security.entity.Document;
-import com.example.MedCore.modules.security.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,10 +1,5 @@
 package com.example.MedCore.modules.clinic.dto;
 
-
-import jakarta.persistence.ColumnResult;
-import jakarta.persistence.ConstructorResult;
-import jakarta.persistence.SqlResultSetMapping;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
