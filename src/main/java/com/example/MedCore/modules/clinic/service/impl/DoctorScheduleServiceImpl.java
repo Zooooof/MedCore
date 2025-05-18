@@ -38,6 +38,7 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
                 .map(rv -> {
                     Document doc = rv.getReferral().getDocument();
                     return new DoctorVisitResponseDTO(
+                            rv.getVisitId(),
                             rv.getVisitDatetime(),
                             rv.getDurationMinutes(),
                             rv.getStatus().name(),

@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -23,15 +24,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/doctors")
 @Tag(name = "Сотрудники", description = "Методы для управления сотрудниками больницы")
 public class DoctorController {
     private final DoctorService doctorService;
     private static final Logger logger = LoggerFactory.getLogger(DoctorController.class);
-
-    public DoctorController(DoctorService doctorService) {
-        this.doctorService = doctorService;
-    }
 
     @Operation(summary = "Получить список врачей", description = "Доступно только с правом CRUD_DOCTOR")
     @ApiResponse(responseCode = "200", description = "Успешно получен список врачей")
