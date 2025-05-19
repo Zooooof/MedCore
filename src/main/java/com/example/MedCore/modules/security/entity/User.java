@@ -1,5 +1,6 @@
 package com.example.MedCore.modules.security.entity;
 
+import com.example.MedCore.modules.clinic.entity.Doctor;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -59,4 +60,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<UserRole> userRoles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Doctor> doctors = new HashSet<>();
 }
