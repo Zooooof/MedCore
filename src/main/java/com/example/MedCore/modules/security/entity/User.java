@@ -33,7 +33,7 @@ public class User {
     @Column(nullable = false)
     Status status = Status.ACTIVE;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "document_id", nullable = false)
     private Document document;
 
