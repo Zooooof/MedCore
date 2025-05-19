@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -49,4 +51,7 @@ public class Referral {
     public void preUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    @OneToMany(mappedBy = "referral", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ReferralVisit> referralVisits = new ArrayList<>();
 }
