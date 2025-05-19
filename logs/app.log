@@ -1,0 +1,28 @@
+2025-05-19T13:33:30.618+03:00  INFO 3360 --- [main] com.example.MedCore.MedCoreApplication   : Starting MedCoreApplication using Java 22.0.2 with PID 3360 (C:\Users\serez\IdeaProjects\MedCore\target\classes started by serez in C:\Users\serez\IdeaProjects\MedCore)
+2025-05-19T13:33:30.626+03:00 DEBUG 3360 --- [main] com.example.MedCore.MedCoreApplication   : Running with Spring Boot v3.1.5, Spring v6.0.13
+2025-05-19T13:33:30.627+03:00  INFO 3360 --- [main] com.example.MedCore.MedCoreApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-05-19T13:33:32.052+03:00  INFO 3360 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-19T13:33:32.178+03:00  INFO 3360 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 115 ms. Found 12 JPA repository interfaces.
+2025-05-19T13:33:33.238+03:00  INFO 3360 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2025-05-19T13:33:33.258+03:00  INFO 3360 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-19T13:33:33.259+03:00  INFO 3360 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.15]
+2025-05-19T13:33:33.424+03:00  INFO 3360 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-19T13:33:33.425+03:00  INFO 3360 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2717 ms
+2025-05-19T13:33:33.704+03:00  INFO 3360 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-19T13:33:33.865+03:00  INFO 3360 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.13.Final
+2025-05-19T13:33:33.869+03:00  INFO 3360 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2025-05-19T13:33:34.284+03:00  INFO 3360 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-19T13:33:34.333+03:00  INFO 3360 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-19T13:33:34.656+03:00  INFO 3360 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@8851ec
+2025-05-19T13:33:34.658+03:00  INFO 3360 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-19T13:33:34.714+03:00  WARN 3360 --- [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-19T13:33:36.204+03:00  INFO 3360 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-19T13:33:36.416+03:00  INFO 3360 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-19T13:33:37.053+03:00  INFO 3360 --- [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-19T13:33:38.534+03:00  WARN 3360 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-19T13:33:38.995+03:00  INFO 3360 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@453ef145, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@712ce4f1, org.springframework.security.web.context.SecurityContextHolderFilter@66161fee, org.springframework.security.web.header.HeaderWriterFilter@7b3d759f, org.springframework.security.web.authentication.logout.LogoutFilter@680f7a5e, com.example.MedCore.modules.security.securityUser.JwtFilter@3edd135d, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@67127bb1, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@25e7e6d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3770dd80, org.springframework.security.web.session.SessionManagementFilter@56bc8c45, org.springframework.security.web.access.ExceptionTranslationFilter@1d123972, org.springframework.security.web.access.intercept.AuthorizationFilter@4b7feb38]
+2025-05-19T13:33:39.399+03:00  INFO 3360 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2025-05-19T13:33:39.414+03:00  INFO 3360 --- [main] com.example.MedCore.MedCoreApplication   : Started MedCoreApplication in 9.663 seconds (process running for 11.004)
+2025-05-19T13:33:42.305+03:00  INFO 3360 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-19T13:33:42.309+03:00  INFO 3360 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-19T13:33:42.324+03:00  INFO 3360 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
