@@ -71,6 +71,6 @@ public class Document {
         MALE, FEMALE
     }
 
-    @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "document", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<User> users = new ArrayList<>();
 }
