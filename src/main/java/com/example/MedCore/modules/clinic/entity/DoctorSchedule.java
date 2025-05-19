@@ -22,7 +22,7 @@ public class DoctorSchedule {
     @Column(name = "schedule_id")
     Long scheduleId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", nullable = false)
     Doctor doctor;
 
