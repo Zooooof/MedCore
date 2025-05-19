@@ -22,7 +22,7 @@ public class Referral {
     @Column(name = "referral_id")
     Long referralId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "doctor_id", nullable = false)
     Doctor doctor;
 

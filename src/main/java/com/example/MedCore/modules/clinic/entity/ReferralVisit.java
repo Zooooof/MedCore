@@ -21,7 +21,7 @@ public class ReferralVisit {
     @Column(name = "visit_id")
     Long visitId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "referral_id", nullable = false)
     Referral referral;
 

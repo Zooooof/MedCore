@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.engine.internal.Cascade;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -21,7 +22,7 @@ public class DoctorSchedule {
     @Column(name = "schedule_id")
     Long scheduleId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "doctor_id", nullable = false)
     Doctor doctor;
 
